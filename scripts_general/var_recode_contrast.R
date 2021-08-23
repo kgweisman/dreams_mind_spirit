@@ -6,9 +6,15 @@ levels_researcher <- c("JBrahinsky", "Jdulin", "VDzokoto",
                        "Faulino", "Emng", "Rsmith")
 
 # contrasts (effect-coding)
-contrasts_country <- cbind("_gh" = c(-1, 1, 0, 0, 0),
-                           "_th" = c(-1, 0, 1, 0, 0),
-                           "_ch" = c(-1, 0, 0, 1, 0),
-                           "_vt" = c(-1, 0, 0, 0, 1))
+# contrasts_country <- cbind("_gh" = c(-1, 1, 0, 0, 0),
+#                            "_th" = c(-1, 0, 1, 0, 0),
+#                            "_ch" = c(-1, 0, 0, 1, 0),
+#                            "_vt" = c(-1, 0, 0, 0, 1))
 contrasts_site <- cbind("_rural" = c(-1, 1))
 contrasts_religion <- cbind("_char" = c(1, -1))
+
+# contrasts (dummy-coding)
+contrasts_country <- cbind("_gh" = c(0, 1, 0, 0, 0),
+                           "_th" = c(0, 0, 1, 0, 0),
+                           "_ch" = c(0, 0, 0, 1, 0),
+                           "_vt" = c(0, 0, 0, 0, 1))
