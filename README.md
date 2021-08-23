@@ -6,24 +6,14 @@ This repo includes analyses of the data related to dreams from the [Mind and Spi
 
 **Datasets** for each of the four studies are available [here](https://github.com/kgweisman/dreams_mind_spirit/tree/master/data).
 
-**Analysis scripts** are organized by study. To view the results of an analysis in an HTML file, download the R Notebook (extension: .nb.html) to a folder on your computer and re-open it (from that folder) in a web browser -- or use the [htmlpreview.github.com](htmlpreview.github.com) links provided below. To view and manipulate the code, download the R Markdown file (extension: .Rmd) and open it in RStudio.
+**Analysis scripts** are availalbe [here](https://github.com/kgweisman/dreams_mind_spirit/tree/master/analyses). To view the results of an analysis in an HTML file, download the R Notebook (extension: .nb.html) to a folder on your computer and re-open it (from that folder) in a web browser -- or use the [htmlpreview.github.com](htmlpreview.github.com) links provided below. To view and manipulate the code, download the R Markdown file (extension: .Rmd) and open it in RStudio.
 
-**Figures** are available [here](https://github.com/kgweisman/dreams_mind_spirit/tree/master/figures) -- HTML preview: [figures](http://htmlpreview.github.io/?https://github.com/kgweisman/dreams_mind_spirit/blob/master/figures/figures.nb.html)
+In Study 1, adults with strong religious commitments and faith practices were interviewed in depth about their spiritual experiences and their understanding of the mind by experienced ethnographers.
 
-## Study 1
+In Study 2, adults from the general population, as well as a smaller sample of charismatic evangelical Christians, were interviewed briefly about their spiritual experiences and their understanding of the mind. 
 
-In [Study 1](https://github.com/kgweisman/dreams_mind_spirit/tree/master/study1), adults with strong religious commitments and faith practices were interviewed in depth about their spiritual experiences and their understanding of the mind by experienced ethnographers.
+In Study 3, college undergraduates completed a survey consisting of one measure of absorption (the Absorption scale, `abs_score`) and two measures of spiritual experience (a “Spiritual Events” inventory based on Studies 1 and 2; and a modified version of the Daily Spiritual Experiences scale [Underwood & Teresi, 2002]).
 
-## Study 2
-
-In [Study 2](https://github.com/kgweisman/dreams_mind_spirit/tree/master/study2), adults from the general population, as well as a smaller sample of charismatic evangelical Christians, were interviewed briefly about their spiritual experiences and their understanding of the mind. 
-
-## Study 3
-
-In [Study 3](https://github.com/kgweisman/dreams_mind_spirit/tree/master/study3), college undergraduates completed a survey consisting of one measure of absorption (the Absorption scale, `abs_score`) and two measures of spiritual experience (a “Spiritual Events” inventory based on Studies 1 and 2; and a modified version of the Daily Spiritual Experiences scale [Underwood & Teresi, 2002]).
-
-## Study 4
-
-In [Study 4](https://github.com/kgweisman/dreams_mind_spirit/tree/master/study4), college undergraduates completed a survey consisting of nine measures, including two indices of spiritual experience (Spiritual Events, based on Studies 1-3; and the Daily Spiritual Experiences scale [Underwood & Teresi, 2002]).
+In Study 4, college undergraduates completed a survey consisting of nine measures, including two indices of spiritual experience (Spiritual Events, based on Studies 1-3; and the Daily Spiritual Experiences scale [Underwood & Teresi, 2002]).
 
 
