@@ -12,7 +12,7 @@ In Study 1, adults with strong religious commitments and faith practices were in
 
 In Study 2, adults from the general population, as well as a smaller sample of charismatic evangelical Christians, were interviewed briefly about their spiritual experiences and their understanding of the mind. 
 
-In Study 3, college undergraduates completed a survey consisting of one measure of absorption (the Absorption scale, `abs_score`) and two measures of spiritual experience (a “Spiritual Events” inventory based on Studies 1 and 2; and a modified version of the Daily Spiritual Experiences scale [Underwood & Teresi, 2002]).
+In Study 3, college undergraduates completed a survey consisting of one measure of absorption and two measures of spiritual experience (a “Spiritual Events” inventory based on Studies 1 and 2; and a modified version of the Daily Spiritual Experiences scale [Underwood & Teresi, 2002]).
 
 In Study 4, college undergraduates completed a survey consisting of nine measures, including two indices of spiritual experience (Spiritual Events, based on Studies 1-3; and the Daily Spiritual Experiences scale [Underwood & Teresi, 2002]).
 
