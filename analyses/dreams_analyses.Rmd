@@ -25,6 +25,73 @@ source("../scripts_general/data_load.R")
 
 In Study 1, adults with strong religious commitments and faith practices were interviewed in depth about their spiritual experiences and their understanding of the mind by experienced ethnographers. The "Spiritual Curiosity" interview included one question about experiencing God* through dreams (`godviadreams`) and one question about experiencing sleep paralysis (`sleepparalysis`).
 
+```{r, fig.width = 8, fig.asp = 1}
+d1 %>% 
+  select(study, researcher, country, site, religion, subject_id,
+           godviapeople:seethingscornereye) %>%
+  distinct() %>%
+  gather(question, response, c(godviapeople:seethingscornereye)) %>%
+  mutate(response = factor(response, 
+                           exclude = NULL,
+                           levels = c(NA, 0, 0.5, 1),
+                           labels = c("NA", "no", "maybe", "yes"))) %>%
+  ggplot(aes(x = country, fill = country, alpha = response)) +
+  facet_wrap(~ question) +
+  geom_bar(stat = "count", position = "fill", color = "black", size = 0.2) +
+  geom_text(data = . %>%
+              count(country, question, response) %>%
+              complete(response, nesting(country, question), 
+                       fill = list(n = 0)) %>%
+              group_by(country, question) %>%
+              mutate(prop = n/sum(n)) %>%
+              filter(response == "yes") %>%
+              select(country, question, prop),
+            aes(label = paste0(round(prop, 2)*100, "%"),
+                y = prop, alpha = NULL, fill = NULL),
+            color = "black", nudge_y = -0.05, size = 3, show.legend = F) +
+  scale_y_continuous(labels = scales::label_percent()) +
+  scale_alpha_manual(values = c(0, 0.2, 0.4, 0.8)) +
+  scale_fill_brewer(palette = "Dark2") +
+  theme_minimal() +
+  guides(fill = guide_none(),
+         alpha = guide_legend("Response")) +
+  labs(title = "Study 1 (Spiritual Curiosity Interview)",
+       x = "Country", y = "Percent of participants")
+```
+
+```{r}
+d1 %>% 
+  select(study, researcher, country, site, religion, subject_id,
+           godviapeople:seethingscornereye) %>%
+  distinct() %>%
+  gather(question, response, c(godviapeople:seethingscornereye)) %>%
+  group_by(country, question) %>%
+  summarise(mean = mean(response, na.rm = T)) %>%
+  ungroup() %>%
+  mutate(question_cat = recode_factor(question,
+                                      "godviadreams" = "dreams",
+                                      "sleepparalysis" = "sleep paralysis",
+                                      .default = "other")) %>%
+  ggplot(aes(x = country, y = mean, color = question_cat, size = question_cat)) +
+  geom_pointrange(data = . %>% 
+                    filter(question_cat == "other") %>%
+                    group_by(country) %>%
+                    multi_boot_standard(col = "mean") %>%
+                    ungroup(),
+                  aes(ymin = ci_lower, ymax = ci_upper, y = mean,
+                      color = NULL, size = NULL)) +
+  geom_line(aes(group = question)) +
+  geom_point(data = . %>% filter(question_cat != "other"), size = 3) +
+  scale_y_continuous(labels = scales::label_percent()) +
+  scale_color_manual(values = c("red", "orange", "black")) +
+  scale_size_manual(values = c(1, 1, 0.1)) +
+  theme_minimal() +
+  guides(color = guide_legend(override.aes = list(size = 0.5))) +
+  labs(title = "Study 1 (Spiritual Curiosity Interview)",
+       x = "Country", y = "Percent of participants", 
+       color = "Question", size = "Question")
+```
+
 ```{r, include = T}
 d1 %>% 
   distinct(study, researcher, country, site, religion, subject_id,
@@ -132,6 +199,41 @@ parameters(r1_sleepparalysis)
 
 In Study 2, adults from the general population, as well as a smaller sample of charismatic evangelical Christians, were interviewed briefly about their spiritual experiences and their understanding of the mind. As part of the "Spiritual Events" scale, these interviews included 1 question about dreams ("Some people say that the divine or supernatural sends them dreams. Has that happened to you?, `epi_2_02`) and 1 question about sleep paralysis ("Some people have had the experience of waking up but being unable to move [this is sometimes called sleep paralysis]. Has this ever happened to you?", `epi_2_20`).
 
+```{r}
+d2 %>% 
+  filter(question %in% c("epi_2_01", "epi_2_02", "epi_2_03", "epi_2_04",
+                         "epi_2_05", "epi_2_06", "epi_2_07", "epi_2_08",
+                         "epi_2_09", "epi_2_10", "epi_2_11", "epi_2_12",
+                         "epi_2_13", "epi_2_14", "epi_2_15", "epi_2_16",
+                         "epi_2_17", "epi_2_18", "epi_2_19", "epi_2_20",
+                         "epi_2_21", "epi_2_22", "epi_2_23")) %>%
+  group_by(country, question) %>%
+  summarise(mean = mean(response, na.rm = T)) %>%
+  ungroup() %>%
+  mutate(question_cat = recode_factor(question,
+                                      "epi_2_02" = "dreams",
+                                      "epi_2_20" = "sleep paralysis",
+                                      .default = "other")) %>%
+  ggplot(aes(x = country, y = mean, color = question_cat, size = question_cat)) +
+  geom_pointrange(data = . %>% 
+                    filter(question_cat == "other") %>%
+                    group_by(country) %>%
+                    multi_boot_standard(col = "mean", na.rm = T) %>%
+                    ungroup(),
+                  aes(ymin = ci_lower, ymax = ci_upper, y = mean,
+                      color = NULL, size = NULL)) +
+  geom_line(aes(group = question)) +
+  geom_point(data = . %>% filter(question_cat != "other"), size = 3) +
+  scale_y_continuous(labels = scales::label_percent()) +
+  scale_color_manual(values = c("red", "orange", "black")) +
+  scale_size_manual(values = c(1, 1, 0.1)) +
+  theme_minimal() +
+  guides(color = guide_legend(override.aes = list(size = 0.5))) +
+  labs(title = "Study 2 (Spiritual Epidemiology)",
+       x = "Country", y = "Percent of participants", 
+       color = "Question", size = "Question")
+```
+
 ```{r, include = T}
 d2 %>% 
   distinct(country, epi_subj, question, response, question_text) %>%
@@ -237,6 +339,37 @@ parameters(r1_epi_2_20)
 
 In Study 3, college undergraduates completed a survey consisting of one measure of absorption and two measures of spiritual experience (a “Spiritual Events” inventory based on Studies 1 and 2; and a modified version of the Daily Spiritual Experiences scale). As part of the "Spiritual Events" scale, these interviews included 1 question about dreams ("Have you ever had a dream you felt was sent by God or a spirit?", `spev_09`) and 1 question about sleep paralysis ("Have you ever had the experience of being awake but unable to move?", `spev_18`).
 
+```{r}
+d3 %>% 
+  filter(grepl("spev", question),
+         !grepl("attn", question)) %>%
+  group_by(country, question) %>%
+  summarise(mean = mean(response, na.rm = T)) %>%
+  ungroup() %>%
+  mutate(question_cat = recode_factor(question,
+                                      "spev_09" = "dreams",
+                                      "spev_18" = "sleep paralysis",
+                                      .default = "other")) %>%
+  ggplot(aes(x = country, y = mean, color = question_cat, size = question_cat)) +
+  geom_pointrange(data = . %>% 
+                    filter(question_cat == "other") %>%
+                    group_by(country) %>%
+                    multi_boot_standard(col = "mean", na.rm = T) %>%
+                    ungroup(),
+                  aes(ymin = ci_lower, ymax = ci_upper, y = mean,
+                      color = NULL, size = NULL)) +
+  geom_line(aes(group = question)) +
+  geom_point(data = . %>% filter(question_cat != "other"), size = 3) +
+  scale_y_continuous(labels = scales::label_percent()) +
+  scale_color_manual(values = c("red", "orange", "black")) +
+  scale_size_manual(values = c(1, 1, 0.1)) +
+  theme_minimal() +
+  guides(color = guide_legend(override.aes = list(size = 0.5))) +
+  labs(title = "Study 3 (Packet 1)",
+       x = "Country", y = "Percent of participants", 
+       color = "Question", size = "Question")
+```
+
 ```{r, include = T}
 d3 %>% 
   distinct(country, subj, question, response) %>%
@@ -305,6 +438,72 @@ parameters(r1_spev_18)
 In Study 4, college undergraduates completed a survey consisting of nine measures, including two indices of porosity, the Absorption scale, two indices of spiritual experience, two indices of more secular extraordinary experience, and two control measures. As part of the "Spiritual Events" scale, this packet included 1 question about dreams ("Have you ever had a dream you felt was sent by God or a spirit?", `p7_se_dream.sent`) and 1 question about sleep paralysis ("Have you ever had the experience of being awake but unable to move?", `p7_se_slep.paralysis`).
 
 As part of the "Paranormal" scale, this packet also included 1 additional question about dreams ("I am completely convinced that I [have never had a/have had at least one] dream that came true and which (I believe) was not just a coincidence."; `p7_exsen_dream.true`).
+
+```{r}
+d4 %>% 
+  select(p7_subj, country, starts_with("p7_se_"), p7_exsen_dream.true) %>%
+  select(-ends_with("_cat"), -contains("check"), -contains("total")) %>%
+  gather(question, response, -c(p7_subj, country)) %>%
+  group_by(country, question) %>%
+  summarise(mean = mean(response, na.rm = T)/4) %>%
+  ungroup() %>%
+  mutate(question_cat = recode_factor(question,
+                                      "p7_se_dream.sent" = "dreams",
+                                      "p7_se_slep.paralysis" = "sleep paralysis",
+                                      "p7_exsen_dream.true" = "dream come true",
+                                      .default = "other")) %>%
+  ggplot(aes(x = country, y = mean, color = question_cat, size = question_cat)) +
+  geom_pointrange(data = . %>% 
+                    filter(question_cat == "other") %>%
+                    group_by(country) %>%
+                    multi_boot_standard(col = "mean", na.rm = T) %>%
+                    ungroup(),
+                  aes(ymin = ci_lower, ymax = ci_upper, y = mean,
+                      color = NULL, size = NULL)) +
+  geom_line(aes(group = question)) +
+  geom_point(data = . %>% filter(question_cat != "other"), size = 3) +
+  scale_color_manual(values = c("red", "orange", "blue", "black")) +
+  scale_size_manual(values = c(1, 1, 1, 0.1)) +
+  theme_minimal() +
+  guides(color = guide_legend(override.aes = list(size = 0.5))) +
+  labs(title = "Study 4 (Packet 7)",
+       x = "Country", y = "Average rating", 
+       color = "Question", size = "Question")
+```
+
+```{r}
+d4 %>% 
+  select(p7_subj, country, starts_with("p7_se_"), p7_exsen_dream.true) %>%
+  select(-ends_with("_cat"), -contains("check"), -contains("total")) %>%
+  gather(question, response, -c(p7_subj, country)) %>%
+  group_by(country, question) %>%
+  mutate(response = ifelse(response > 0, 1, response)) %>%
+  summarise(mean = mean(response, na.rm = T)) %>%
+  ungroup() %>%
+  mutate(question_cat = recode_factor(question,
+                                      "p7_se_dream.sent" = "dreams",
+                                      "p7_se_slep.paralysis" = "sleep paralysis",
+                                      "p7_exsen_dream.true" = "dream come true",
+                                      .default = "other")) %>%
+  ggplot(aes(x = country, y = mean, color = question_cat, size = question_cat)) +
+  geom_pointrange(data = . %>% 
+                    filter(question_cat == "other") %>%
+                    group_by(country) %>%
+                    multi_boot_standard(col = "mean", na.rm = T) %>%
+                    ungroup(),
+                  aes(ymin = ci_lower, ymax = ci_upper, y = mean,
+                      color = NULL, size = NULL)) +
+  geom_line(aes(group = question)) +
+  geom_point(data = . %>% filter(question_cat != "other"), size = 3) +
+  scale_y_continuous(labels = scales::label_percent()) +
+  scale_color_manual(values = c("red", "orange", "blue", "black")) +
+  scale_size_manual(values = c(1, 1, 1, 0.1)) +
+  theme_minimal() +
+  guides(color = guide_legend(override.aes = list(size = 0.5))) +
+  labs(title = "Study 4 (Packet 7)",
+       x = "Country", y = "Percentage of participants", 
+       color = "Question", size = "Question")
+```
 
 ```{r, include = T}
 d4 %>% 
